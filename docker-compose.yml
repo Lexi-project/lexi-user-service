@@ -7,3 +7,16 @@ services:
       - .:/app
     ports:
       - 9002:8000
+    depends_on:
+      - db
+  db:
+    image: postgres
+    env_file:
+      - ./user_service_project/.env
+    ports:
+      - 5655:5432
+    volumes:
+      - user_data:/var/lib/postgresql/data
+
+volumes:
+  user_data:

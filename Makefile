@@ -7,3 +7,6 @@ install: compile
 	pip install -r requirements/requirements-dev.txt
 	rm requirements/requirements.txt
 	rm requirements/requirements-dev.txt
+
+migrate:
+	docker-compose run --rm app python manage.py migrate
