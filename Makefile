@@ -8,5 +8,10 @@ install: compile
 	rm requirements/requirements.txt
 	rm requirements/requirements-dev.txt
 
+build: install
+	python manage.py makemigrations
+	python manage.py migrate --no-input
+	python manage.py collectstatic --no-input
+
 migrate:
 	docker-compose run --rm app python manage.py migrate
