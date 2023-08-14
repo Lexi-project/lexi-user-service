@@ -7,11 +7,12 @@ install: compile
 	pip install -r requirements/requirements-dev.txt
 	rm requirements/requirements.txt
 	rm requirements/requirements-dev.txt
-
-build: install
-	python manage.py makemigrations
-	python manage.py migrate --no-input
 	python manage.py collectstatic --no-input
 
 migrate:
+	docker-compose run --rm app python manage.py makemigrations
 	docker-compose run --rm app python manage.py migrate
+
+init-admin:
+	docker-compose run --rm app python manage.py init_admin
+
