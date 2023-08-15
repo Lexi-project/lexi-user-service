@@ -93,6 +93,7 @@ DATABASES = {
 
 DATABASE_URL = env("DATABASE_URL")
 
+AUTH_USER_MODEL = 'userapp.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
