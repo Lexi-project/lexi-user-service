@@ -16,3 +16,6 @@ migrate:
 init-admin:
 	docker-compose run --rm app python manage.py init_admin
 
+test:
+	docker-compose run --rm app pytest
+	
