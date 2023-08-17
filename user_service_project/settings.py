@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_password_validators',
     'django_password_validators.password_history',
     'userapp.apps.UserappConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
