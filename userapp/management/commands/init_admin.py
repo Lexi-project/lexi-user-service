@@ -9,9 +9,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         if os.environ.get('CREATE_DJANGO_SUPERUSER') == 'yes':
-            if not User.objects.filter(username='admin').exists():
+            if not User.objects.filter(username='test@admin.com').exists():
                 User.objects.create_superuser(
-                    'admin', 'first@admin.com', 'mysecretpassword')
+                    'test@admin.com', 'test@admin.com', 'mysecretpassword')
                 self.stdout.write(self.style.SUCCESS(
                     'Superuser created successfully'))
             else:
