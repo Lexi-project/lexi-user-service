@@ -16,5 +16,5 @@ class IsTokenValid(BasePermission):
             is_blacklisted = self.blacklist_model.objects.get(
                 token_id=outstanding_token.id)
             return not is_blacklisted
-        except OutstandingToken.DoesNotExist or BlacklistedToken.DoesNotExist:
+        except (OutstandingToken.DoesNotExist, BlacklistedToken.DoesNotExist):
             return False

@@ -23,7 +23,7 @@ def check_health(request):
             cursor.execute("SELECT 1 from userapp_user")
         return Response(status=status.HTTP_200_OK)
     except Exception as e:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class UserLogoutAPIView(APIView):
