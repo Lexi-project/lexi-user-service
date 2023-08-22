@@ -6,12 +6,9 @@ from rest_framework.decorators import authentication_classes
 from rest_framework.decorators import permission_classes
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import AccessToken
-from rest_framework_simplejwt.tokens import RefreshToken
-
 from rest_framework_simplejwt.tokens import BlacklistMixin
 from rest_framework.request import Request
 from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 # Create your views here.
