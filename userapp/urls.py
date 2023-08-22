@@ -6,4 +6,5 @@ from . import views
 urlpatterns = [
     path('health-check', views.check_health, name='register'),
     path('login/', TokenObtainPairView.as_view(), name='login-user'),
+    path('logout/', views.UserLogoutAPIView.as_view(), name='logout-user'),
 ]
