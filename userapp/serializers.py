@@ -1,13 +1,9 @@
-from rest_framework import serializers
-from django.contrib.auth import authenticate
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
-class UserLoginSerializer(serializers.Serializer):
-    username = serializers.EmailField()
-    password = serializers.CharField()
+class CustomTokenSerializer(TokenObtainPairSerializer):
 
-    def validate(self, data):
-        user = authenticate(**data)
-        if user:
-            return user
-        raise serializers.ValidationError("Incorrect username or password")
+    def validate(self, attrs):
+        token = super().validate(attrs)
+
+        return {'token': token.get('access'), 'user_id': self.user.id}

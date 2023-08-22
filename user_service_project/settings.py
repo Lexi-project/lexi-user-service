@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django_password_validators.password_history',
     'userapp.apps.UserappConfig',
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 MIDDLEWARE = [
@@ -66,12 +67,14 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
+        'userapp.permissions.IsTokenValid',
     ]
 }
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=5),
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    "TOKEN_OBTAIN_SERIALIZER": 'userapp.serializers.CustomTokenSerializer',
 }
 
 
