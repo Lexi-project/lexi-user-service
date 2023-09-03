@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'userapp.apps.UserappConfig',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
+    'django_grpc',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +70,10 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
         'userapp.permissions.IsTokenValid',
     ]
+}
+
+GRPCSERVER = {
+    'servicers': ['userapp.grpc.servicers.grpc_hook'],
 }
 
 SIMPLE_JWT = {
