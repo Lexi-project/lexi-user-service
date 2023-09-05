@@ -9,6 +9,16 @@ services:
       - 9002:8000
     depends_on:
       - db
+  grpc:
+    build:
+      context: .
+      dockerfile: Grpc.Dockerfile
+    volumes:
+      - .:/grpc
+    ports:
+      - 50051:50051
+    depends_on:
+      - db
   db:
     image: postgres
     env_file:

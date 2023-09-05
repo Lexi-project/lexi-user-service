@@ -1,0 +1,3 @@
+[submodule "proto-shared-lib"]
+	path = proto-shared-lib
+	url = git@github.com:co-yo-ne-da/lexi-proto.git
