@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django_password_validators',
     'django_password_validators.password_history',
     'userapp.apps.UserappConfig',
+    'credits.apps.CreditsConfig',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'django_grpc',
