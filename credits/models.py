@@ -1,4 +1,3 @@
-import datetime
 from django.db import models
 
 # Create your models here.
@@ -13,6 +12,3 @@ class CreditTransaction(models.Model):
     status = models.CharField(choices=TransactionStatus.choices, default=TransactionStatus.PENDING)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"{self.user.username}'s Account"
