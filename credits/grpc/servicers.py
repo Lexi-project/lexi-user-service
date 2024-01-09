@@ -50,3 +50,14 @@ class CreditServiceServicer(credit_pb2_grpc.CreditServiceServicer):
             context.set_code(grpc.StatusCode.INTERNAL)
             return credit_pb2.BorrowCreditResponse()
 
+    @transaction.atomic()
+    def RollbackCredit(self, request, context):
+        try:
+            transaction = CreditTransaction.objects.get(id=request.transaction_id)
+            transaction.status = TansactionStatus.FAILURE
+            transaction.save()
+            return credit_pb2.RollbackCreditResponse(is_success=True)
+        except Exception as e:
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return credit_pb2.RollbackCreditResponse()
+        
