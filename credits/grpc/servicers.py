@@ -61,3 +61,13 @@ class CreditServiceServicer(credit_pb2_grpc.CreditServiceServicer):
             context.set_code(grpc.StatusCode.INTERNAL)
             return credit_pb2.RollbackCreditResponse()
         
+    @transaction.atomic()
+    def CommitCredit(self, request, context):
+        try:
+            transaction = CreditTransaction.objects.get(id=request.transaction_id)
+            transaction.status = TansactionStatus.SUCCESS
+            transaction.save()
+            return credit_pb2.CommitCreditResponse(is_success=True)
+        except Exception as e:
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return credit_pb2.CommitCreditResponse()
