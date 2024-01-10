@@ -81,7 +81,7 @@ REST_FRAMEWORK = {
 }
 
 GRPCSERVER = {
-    'servicers': ['userapp.grpc.servicers.grpc_hook'],
+    'servicers': ['grpc_utils.grpc_hook'],
 }
 
 SIMPLE_JWT = {
