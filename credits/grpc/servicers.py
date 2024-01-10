@@ -28,46 +28,34 @@ def get_user_from_token(token: str) -> Optional[User]:
 
 class CreditServiceServicer(credit_pb2_grpc.CreditServiceServicer):
 
+    @transaction.atomic()
     def BorrowCredit(self, request, context):
-        try:
-            user = get_user_from_token(request.token)
-            account = Account.objects.get(user=user)
+        user = get_user_from_token(request.token)
+        account = Account.objects.get(user=user)
 
-            if request.credits <= 0:
-                context.set_details('Invalid credits value')
-                context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-                return credit_pb2.BorrowCreditResponse()
-            
-            if account.credits < request.credits:
-                context.set_details('You do not have enough credits in your account')
-                context.set_code(grpc.StatusCode.RESOURCE_EXHAUSTED)
-                return credit_pb2.BorrowCreditResponse()
-            
-            transaction = CreditTransaction.objects.create(credits=request.credits)
-            return credit_pb2.BorrowCreditResponse(transaction_id=transaction.id)
-                
-        except Exception as e:
-            context.set_code(grpc.StatusCode.INTERNAL)
+        if request.credits <= 0 or account.credits < request.credits:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             return credit_pb2.BorrowCreditResponse()
+        
+        new_transaction = CreditTransaction.objects.create(credits=request.credits)
+        account.credits = account.credits - new_transaction.credits
+        account.save()
+        return credit_pb2.BorrowCreditResponse(transaction_id=new_transaction.id) 
 
     @transaction.atomic()
     def RollbackCredit(self, request, context):
-        try:
-            transaction = CreditTransaction.objects.get(id=request.transaction_id)
-            transaction.status = TansactionStatus.FAILURE
-            transaction.save()
-            return credit_pb2.RollbackCreditResponse(is_success=True)
-        except Exception as e:
-            context.set_code(grpc.StatusCode.INTERNAL)
-            return credit_pb2.RollbackCreditResponse()
+        transaction = CreditTransaction.objects.get(id=request.transaction_id)
+        user = get_user_from_token(request.token)
+        account = Account.objects.get(user=user)
+        account.credits = account.credits + transaction.credits
+        account.save()
+        transaction.status = TansactionStatus.FAILURE.value
+        transaction.save()
+        return credit_pb2.RollbackCreditResponse(is_success=True)
+    
         
-    @transaction.atomic()
     def CommitCredit(self, request, context):
-        try:
-            transaction = CreditTransaction.objects.get(id=request.transaction_id)
-            transaction.status = TansactionStatus.SUCCESS
-            transaction.save()
-            return credit_pb2.CommitCreditResponse(is_success=True)
-        except Exception as e:
-            context.set_code(grpc.StatusCode.INTERNAL)
-            return credit_pb2.CommitCreditResponse()
+        transaction = CreditTransaction.objects.get(id=request.transaction_id)
+        transaction.status = TansactionStatus.SUCCESS.value
+        transaction.save()
+        return credit_pb2.CommitCreditResponse(is_success=True)
