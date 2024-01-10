@@ -11,4 +11,5 @@ django-grpc==1.0.21
 grpcio-reflection==1.57.0
 grpcio-tools==1.57.0
 djangorestframework-simplejwt==5.2.2
+django-cors-headers==4.0.0
 pyjwt==2.8.0
