@@ -10,6 +10,8 @@ from rest_framework_simplejwt.tokens import BlacklistMixin
 from rest_framework.request import Request
 from rest_framework.permissions import IsAuthenticated
 
+from userapp.models import User
+
 
 # Create your views here.
 
@@ -25,6 +27,15 @@ def check_health(request):
     except Exception as e:
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_authenticated_user(request: Request):
+    authenticated_user = request.user
+    user_id = authenticated_user.id
+    return Response(
+        {"user_id": user_id},
+        status=status.HTTP_200_OK
+    )
 
 class UserLogoutAPIView(APIView):
     permission_classes = [IsAuthenticated, ]
